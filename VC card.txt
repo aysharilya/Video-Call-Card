@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Spesial untuk Rayi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vintage-paper: #f4ecd8;
+            --envelope-color: #d4a373;
+            --wax-seal: #8b0000;
+        }
+
+        body {
+            background-color: #2c2c2c;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'EB Garamond', serif;
+        }
+
+        /* Container Transitions */
+        .page {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            transition: opacity 0.8s ease;
+        }
+
+        .active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Page 1: Envelope */
+        .envelope-wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background-color: var(--envelope-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            cursor: default;
+        }
+
+        .envelope-text {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 2.5rem;
+            color: #4a3728;
+            margin-bottom: 20px;
+        }
+
+        /* Wax Seal */
+        .wax-seal {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, var(--wax-seal) 0%, #600 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border: 2px solid #700;
+        }
+
+        .wax-seal:hover {
+            transform: scale(1.1);
+        }
+
+        .wax-seal:active {
+            transform: scale(0.9);
+        }
+
+        .wax-seal span {
+            color: #ffd700;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Page 2 & 3: Letter */
+        .letter {
+            background: var(--vintage-paper);
+            width: 90%;
+            max-width: 500px;
+            min-height: 600px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 100% 2em;
+            border: 1px solid #dcd3bc;
+        }
+
+        .letter::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #c5b358;
+            margin: 10px;
+            pointer-events: none;
+        }
+
+        .letter-content {
+            font-family: 'Playfair Display', serif;
+            color: #332b1d;
+            line-height: 1.8;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .script-font {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 3rem;
+        }
+
+        .btn-next {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: none;
+            border: 1px solid #332b1d;
+            padding: 8px 15px;
+            font-family: 'EB Garamond', serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-next:hover {
+            background: #332b1d;
+            color: var(--vintage-paper);
+        }
+
+        /* Choice buttons on page 3 */
+        .choice-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .choice-btn {
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .choice-btn:hover {
+            transform: scale(1.3);
+        }
+
+        /* Message Overlay */
+        #status-msg {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="status-msg"></div>
+
+    <!-- Halaman 1: Amplop -->
+    <div id="page1" class="page active">
+        <div class="envelope-wrapper">
+            <div class="envelope-text">Untuk: Rayi</div>
+            <div class="wax-seal" onclick="goToPage(2)">
+                <span>R</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman 2: Undangan -->
+    <div id="page2" class="page">
+        <div class="letter">
+            <div class="letter-content">
+                <p class="mb-4 italic">Salam Hangat,</p>
+                <h1 class="script-font mb-8">Rayi</h1>
+                <p class="text-xl mb-6">
+                    Melalui surat kecil ini, aku, <span class="font-bold">Rilya</span>, ingin mengajak <span class="font-bold">Ayi</span> untuk meluangkan sedikit waktu...
+                </p>
+                <p class="text-lg leading-relaxed italic">
+                    Mari kita melakukan <span class="underline decoration-wavy text-red-900">Video Call</span> sejenak, berbincang dan tertawa bersama untuk lebih mempererat tali pertemanan di antara kita.
+                </p>
+                <p class="mt-10">Aku sangat menantikan kehadiranmu di layar ponselku.</p>
+                
+                <button class="btn-next" onclick="goToPage(3)">Selanjutnya &rarr;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman 3: Keputusan -->
+    <div id="page3" class="page">
+        <div class="letter">
+            <div class="letter-content flex flex-col items-center justify-center h-full">
+                <h2 class="text-3xl font-serif mb-12">Yay or Nay?</h2>
+                <p class="italic text-lg mb-8">
+                    Jika <span class="font-bold">Yay</span> kirimkan love hitam,<br>
+                    Jika <span class="font-bold">Nay</span> kirimkan bulat hitam.
+                </p>
+                
+                <div class="choice-container">
+                    <button class="choice-btn" title="Yay" onclick="sendResponse('🖤')">🖤</button>
+                    <button class="choice-btn" title="Nay" onclick="sendResponse('⚫')">⚫</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToPage(pageNum) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Tampilkan halaman target
+            const targetPage = document.getElementById('page' + pageNum);
+            targetPage.classList.add('active');
+            
+            // Animasi masuk (optional)
+            targetPage.style.opacity = '0';
+            setTimeout(() => {
+                targetPage.style.opacity = '1';
+            }, 50);
+        }
+
+        function sendResponse(emoji) {
+            const msg = document.getElementById('status-msg');
+            msg.innerText = "Kamu telah memilih: " + emoji;
+            msg.style.display = 'block';
+            
+            // Efek tambahan saat memilih
+            setTimeout(() => {
+                msg.style.display = 'none';
+                if(emoji === '🖤') {
+                    showHearts();
+                }
+            }, 3000);
+        }
+
+        // Fungsi kecil untuk animasi love jika memilih Yay
+        function showHearts() {
+            for(let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '🖤';
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.transition = 'transform 3s linear, opacity 3s';
+                heart.style.zIndex = '999';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+                    heart.style.opacity = '0';
+                }, 100);
+
+                setTimeout(() => heart.remove(), 4000);
+            }
+        }
+    </script>
+</body>
+</html>
